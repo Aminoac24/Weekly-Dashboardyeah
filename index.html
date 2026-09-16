@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- SGS Calendar V.1 - Fresh Edition -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>St. George's Senior School Calendar</title>
+    <title>SGS Calendar V.1</title>
     <!-- Google Fonts & Material Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
     <style>
         :root {
-            /* Theme 1: Classic Saints Navy (Default) */
+            /* Classic Saints Navy (Default) */
             --bg-main: #0B1320;
             --bg-surface: #14213D;
             --bg-card: #1C2D4B;
@@ -22,13 +23,12 @@
             --border-color: #243552;
 
             /* Category Colors */
-            --cat-academics: #C8102E;   /* Red */
-            --cat-athletics: #00A3E0;   /* Light Blue */
-            --cat-arts: #D4AF37;        /* Gold */
-            --cat-boarding: #00E676;    /* Green */
+            --cat-academics: #C8102E;
+            --cat-athletics: #00A3E0;
+            --cat-arts: #D4AF37;
+            --cat-boarding: #00E676;
         }
 
-        /* Color Theme Classes */
         body.theme-red {
             --bg-main: #1A0508;
             --bg-surface: #2E0B10;
@@ -74,7 +74,6 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* Custom Scrollbars */
         ::-webkit-scrollbar {
             width: 8px;
             height: 8px;
@@ -90,7 +89,7 @@
             background: var(--saints-gold);
         }
 
-        /* --- HEADER --- */
+        /* HEADER */
         header {
             display: flex;
             align-items: center;
@@ -159,7 +158,6 @@
             background-color: var(--bg-card);
         }
 
-        /* View Selector Dropdown */
         .view-select {
             background-color: var(--bg-card);
             color: var(--saints-white);
@@ -202,14 +200,13 @@
             border: 2px solid var(--saints-gold);
         }
 
-        /* --- MAIN CONTAINER AREA --- */
+        /* MAIN LAYOUT */
         .main-container {
             display: flex;
             flex: 1;
             overflow: hidden;
         }
 
-        /* --- SIDEBAR --- */
         sidebar {
             width: 260px;
             background-color: var(--bg-surface);
@@ -321,7 +318,7 @@
             height: 16px;
         }
 
-        /* --- CALENDAR VIEW AREA --- */
+        /* CALENDAR VIEW AREA */
         .calendar-view {
             flex: 1;
             display: flex;
@@ -330,7 +327,6 @@
             overflow: auto;
         }
 
-        /* DAYS HEADER */
         .days-header {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -351,7 +347,6 @@
             border-right: 1px solid var(--border-color);
         }
 
-        /* MONTH GRID */
         .month-grid {
             flex: 1;
             display: grid;
@@ -407,7 +402,7 @@
             opacity: 0.3;
         }
 
-        /* WEEK VIEW LAYOUT */
+        /* WEEK VIEW */
         .week-view-container {
             display: flex;
             flex-direction: column;
@@ -483,7 +478,7 @@
             background-color: rgba(255, 255, 255, 0.02);
         }
 
-        /* --- EXPANDABLE EVENTS --- */
+        /* EVENTS */
         .event {
             font-size: 0.75rem;
             border-radius: 4px;
@@ -703,13 +698,12 @@
             <button class="btn" id="menuBtn" title="Toggle Sidebar"><span class="material-icons-outlined">menu</span></button>
             <div class="logo-container">
                 <span class="material-icons-outlined dragon-icon">workspace_premium</span>
-                <div class="school-name">ST. GEORGE'S <span>SENIOR</span></div>
+                <div class="school-name">SGS <span>CALENDAR V.1</span></div>
             </div>
             <button class="btn today-btn" id="todayBtn">Today</button>
             <button class="btn" id="prevBtn" title="Previous"><span class="material-icons-outlined">chevron_left</span></button>
             <button class="btn" id="nextBtn" title="Next"><span class="material-icons-outlined">chevron_right</span></button>
             
-            <!-- View Selector -->
             <select class="view-select" id="viewModeSelect">
                 <option value="month">Month View</option>
                 <option value="week">Week View</option>
@@ -718,8 +712,6 @@
             <div class="current-date" id="currentDateDisplay">September 2026</div>
         </div>
         <div class="header-right">
-            <button class="btn" id="searchBtn" title="Search"><span class="material-icons-outlined">search</span></button>
-            <button class="btn" id="helpBtn" title="Help"><span class="material-icons-outlined">help_outline</span></button>
             <button class="btn" id="settingsBtn" title="Settings"><span class="material-icons-outlined">settings</span></button>
             <div class="user-avatar" title="Saints Boy">SG</div>
         </div>
@@ -727,7 +719,6 @@
 
     <!-- MAIN CONTAINER -->
     <div class="main-container">
-        
         <!-- SIDEBAR -->
         <sidebar id="sidebar">
             <button class="create-btn" id="openCreateModal">
@@ -769,10 +760,8 @@
             </div>
         </sidebar>
 
-        <!-- MAIN CALENDAR GRID VIEW CONTAINER -->
-        <div class="calendar-view" id="calendarView">
-            <!-- Dynamic Content Rendered Here (Month vs Week View) -->
-        </div>
+        <!-- MAIN CALENDAR VIEW CONTAINER -->
+        <div class="calendar-view" id="calendarView"></div>
     </div>
 
     <!-- CREATE EVENT MODAL -->
@@ -822,7 +811,7 @@
         </div>
     </div>
 
-    <!-- SETTINGS / THEME MODAL -->
+    <!-- SETTINGS MODAL -->
     <div class="modal" id="settingsModal">
         <div class="modal-content">
             <div class="modal-header">
@@ -855,20 +844,36 @@
     </div>
 
     <script>
-        // State Management
-        let currentDate = new Date(2026, 8, 16); 
-        const today = new Date(2026, 8, 16);
-        let currentView = 'month'; // 'month' or 'week'
+        const STORAGE_KEY = 'SGS_CALENDAR_EVENTS_CLEAN_V1';
+
+        function loadEvents() {
+            const stored = localStorage.getItem(STORAGE_KEY);
+            if (stored) {
+                try {
+                    return JSON.parse(stored);
+                } catch (e) {
+                    return [];
+                }
+            } else {
+                return [];
+            }
+        }
+
+        function saveEvents(dataToSave) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(dataToSave));
+        }
+
+        let currentDate = new Date(); 
+        const today = new Date();
+        let currentView = 'month';
         let selectedEvent = null;
         let draggedEventId = null;
 
-        // Blank Event Database
-        let events = [];
+        let events = loadEvents();
 
         const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
-        // DOM elements
         const currentDateDisplay = document.getElementById('currentDateDisplay');
         const miniDateDisplay = document.getElementById('miniDateDisplay');
         const calendarView = document.getElementById('calendarView');
@@ -876,7 +881,6 @@
         const sidebar = document.getElementById('sidebar');
         const viewModeSelect = document.getElementById('viewModeSelect');
 
-        // Core Render Switcher
         function renderCalendar() {
             if (currentView === 'month') {
                 renderMonthView();
@@ -887,7 +891,6 @@
             applyCategoryFilters();
         }
 
-        // --- RENDER MONTH VIEW ---
         function renderMonthView() {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
@@ -910,20 +913,17 @@
             const lastDay = new Date(year, month + 1, 0).getDate();
             const prevLastDay = new Date(year, month, 0).getDate();
 
-            // Previous month fill days
             for (let x = firstDayIndex; x > 0; x--) {
                 const dayNum = prevLastDay - x + 1;
                 const prevDate = new Date(year, month - 1, dayNum);
                 mainGrid.appendChild(createCell(prevDate, true));
             }
 
-            // Current month days
             for (let i = 1; i <= lastDay; i++) {
                 const curDate = new Date(year, month, i);
                 mainGrid.appendChild(createCell(curDate, false));
             }
 
-            // Next month fill days
             const totalCellsRendered = firstDayIndex + lastDay;
             const nextDays = (totalCellsRendered > 35 ? 42 : 35) - totalCellsRendered;
             for (let j = 1; j <= nextDays; j++) {
@@ -932,16 +932,13 @@
             }
         }
 
-        // --- RENDER WEEK VIEW ---
         function renderWeekView() {
-            // Get Sunday of the current week
             const startOfWeek = new Date(currentDate);
             startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
 
             const endOfWeek = new Date(startOfWeek);
             endOfWeek.setDate(startOfWeek.getDate() + 6);
 
-            // Set Header Display for Week View
             if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
                 currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]} ${startOfWeek.getFullYear()}`;
             } else {
@@ -965,7 +962,6 @@
                 `;
             }
 
-            // Standard school hours 8 AM - 6 PM
             const hours = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM'];
             let timeRowsHTML = '';
 
@@ -999,7 +995,6 @@
                 </div>
             `;
 
-            // Populate events in week view
             weekDaysArr.forEach(dateObj => {
                 const y = dateObj.getFullYear();
                 const m = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -1008,8 +1003,7 @@
 
                 const dayCells = calendarView.querySelectorAll(`.week-cell[data-date="${dateKey}"]`);
                 if (dayCells.length > 0) {
-                    const targetCell = dayCells[0]; // Put events into top section for day
-                    
+                    const targetCell = dayCells[0];
                     events.filter(e => e.date === dateKey).forEach(evt => {
                         targetCell.appendChild(createEventElement(evt));
                     });
@@ -1017,7 +1011,6 @@
             });
         }
 
-        // Cell Factory for Month View
         function createCell(dateObj, isOtherMonth) {
             const cell = document.createElement('div');
             cell.className = 'cell' + (isOtherMonth ? ' other-month' : '');
@@ -1035,7 +1028,6 @@
 
             cell.innerHTML = `<div class="cell-number">${dateObj.getDate()}</div>`;
 
-            // Drag & Drop
             cell.addEventListener('dragover', (e) => { e.preventDefault(); cell.classList.add('drag-over'); });
             cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
             cell.addEventListener('drop', (e) => {
@@ -1046,12 +1038,12 @@
                     const targetEvt = events.find(ev => ev.id === draggedEventId);
                     if (targetEvt) {
                         targetEvt.date = targetDate;
+                        saveEvents(events);
                         renderCalendar();
                     }
                 }
             });
 
-            // Populate events
             events.filter(e => e.date === dateKey).forEach(evt => {
                 cell.appendChild(createEventElement(evt));
             });
@@ -1059,7 +1051,6 @@
             return cell;
         }
 
-        // Helper: Create Expandable Event Component
         function createEventElement(evt) {
             const evtDiv = document.createElement('div');
             evtDiv.className = `event ${evt.cat}` + (evt.expanded ? ' expanded' : '');
@@ -1091,6 +1082,7 @@
             toggleBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 evt.expanded = !evt.expanded;
+                saveEvents(events);
                 renderCalendar();
             });
 
@@ -1103,6 +1095,7 @@
             evtDiv.addEventListener('click', (e) => {
                 e.stopPropagation();
                 evt.expanded = !evt.expanded;
+                saveEvents(events);
                 renderCalendar();
             });
 
@@ -1134,7 +1127,6 @@
             }
         }
 
-        // Category Filters
         function applyCategoryFilters() {
             document.querySelectorAll('.cat-filter').forEach(checkbox => {
                 const category = checkbox.getAttribute('data-category');
@@ -1146,7 +1138,6 @@
             });
         }
 
-        // Modal Helpers
         function closeModal(id) {
             document.getElementById(id).style.display = 'none';
         }
@@ -1166,6 +1157,7 @@
                 selectedEvent.cat = document.getElementById('editEventCategory').value;
                 selectedEvent.date = document.getElementById('editEventDate').value;
                 selectedEvent.desc = document.getElementById('editEventDesc').value;
+                saveEvents(events);
                 closeModal('editEventModal');
                 renderCalendar();
             }
@@ -1181,6 +1173,7 @@
                     desc: selectedEvent.desc,
                     expanded: false
                 });
+                saveEvents(events);
                 closeModal('editEventModal');
                 renderCalendar();
             }
@@ -1189,14 +1182,17 @@
         document.getElementById('deleteEventBtn').addEventListener('click', () => {
             if (selectedEvent) {
                 events = events.filter(e => e.id !== selectedEvent.id);
+                saveEvents(events);
                 closeModal('editEventModal');
                 renderCalendar();
             }
         });
 
-        // Add Event
         document.getElementById('openCreateModal').addEventListener('click', () => {
-            document.getElementById('eventDate').value = '2026-09-16';
+            const y = today.getFullYear();
+            const m = String(today.getMonth() + 1).padStart(2, '0');
+            const d = String(today.getDate()).padStart(2, '0');
+            document.getElementById('eventDate').value = `${y}-${m}-${d}`;
             document.getElementById('eventDesc').value = '';
             document.getElementById('createEventModal').style.display = 'flex';
         });
@@ -1216,6 +1212,7 @@
                     desc: descVal,
                     expanded: false
                 });
+                saveEvents(events);
                 document.getElementById('eventTitle').value = '';
                 document.getElementById('eventDesc').value = '';
                 closeModal('createEventModal');
@@ -1227,7 +1224,6 @@
             document.body.className = themeName;
         }
 
-        // Navigation Controls
         document.getElementById('prevBtn').addEventListener('click', () => { 
             if (currentView === 'month') currentDate.setMonth(currentDate.getMonth() - 1);
             else currentDate.setDate(currentDate.getDate() - 7);
@@ -1242,9 +1238,8 @@
 
         document.getElementById('miniPrevBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
         document.getElementById('miniNextBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
-        document.getElementById('todayBtn').addEventListener('click', () => { currentDate = new Date(2026, 8, 16); renderCalendar(); });
+        document.getElementById('todayBtn').addEventListener('click', () => { currentDate = new Date(); renderCalendar(); });
         
-        // View Selector Switch
         viewModeSelect.addEventListener('change', (e) => {
             currentView = e.target.value;
             renderCalendar();
@@ -1255,7 +1250,6 @@
 
         document.querySelectorAll('.cat-filter').forEach(cb => cb.addEventListener('change', applyCategoryFilters));
 
-        // Initial Boot
         renderCalendar();
     </script>
 </body>
