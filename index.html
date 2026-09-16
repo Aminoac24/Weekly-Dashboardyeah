@@ -950,9 +950,9 @@
             endOfWeek.setDate(startOfWeek.getDate() + 6);
 
             if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
-                currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]} ${startOfWeek.getFullYear()}`;
+                currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]}${startOfWeek.getFullYear()}`;
             } else {
-                currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]} - ${monthNames[endOfWeek.getMonth()]} ${startOfWeek.getFullYear()}`;
+                currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]} - ${monthNames[endOfWeek.getMonth()]}${startOfWeek.getFullYear()}`;
             }
 
             let weekDaysHTML = '';
@@ -987,8 +987,7 @@
 
                 timeRowsHTML += `
                     <div class="time-row">
-                        <div class="time-label">${hour}</div>
-                        ${cellsForHour}
+                        <div class="time-label">${hour}</div>${cellsForHour}
                     </div>
                 `;
             });
@@ -1117,7 +1116,7 @@
         }
 
         function renderMiniCalendar() {
-            miniDateDisplay.innerText = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            miniDateDisplay.innerText = `${monthNames[currentDate.getMonth()]}${currentDate.getFullYear()}`;
             miniGrid.innerHTML = `
                 <div class="mini-day-name">S</div><div class="mini-day-name">M</div>
                 <div class="mini-day-name">T</div><div class="mini-day-name">W</div>
@@ -2029,3 +2028,397 @@
         const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 
         // DOM elements
+        const currentDateDisplay = document.getElementById('currentDateDisplay');
+        const miniDateDisplay = document.getElementById('miniDateDisplay');
+        const calendarView = document.getElementById('calendarView');
+        const miniGrid = document.getElementById('miniGrid');
+        const sidebar = document.getElementById('sidebar');
+        const viewModeSelect = document.getElementById('viewModeSelect');
+
+        // Core Render Switcher
+        function renderCalendar() {
+            if (currentView === 'month') {
+                renderMonthView();
+            } else {
+                renderWeekView();
+            }
+            renderMiniCalendar();
+            applyCategoryFilters();
+        }
+
+        // --- RENDER MONTH VIEW ---
+        function renderMonthView() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+
+            currentDateDisplay.innerText = `${monthNames[month]} ${year}`;
+
+            calendarView.innerHTML = `
+                <div class="days-header">
+                    <div class="day-label">SUN</div><div class="day-label">MON</div>
+                    <div class="day-label">TUE</div><div class="day-label">WED</div>
+                    <div class="day-label">THU</div><div class="day-label">FRI</div>
+                    <div class="day-label">SAT</div>
+                </div>
+                <div class="month-grid" id="mainGrid"></div>
+            `;
+
+            const mainGrid = document.getElementById('mainGrid');
+            
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const lastDay = new Date(year, month + 1, 0).getDate();
+            const prevLastDay = new Date(year, month, 0).getDate();
+
+            // Previous month fill days
+            for (let x = firstDayIndex; x > 0; x--) {
+                const dayNum = prevLastDay - x + 1;
+                const prevDate = new Date(year, month - 1, dayNum);
+                mainGrid.appendChild(createCell(prevDate, true));
+            }
+
+            // Current month days
+            for (let i = 1; i <= lastDay; i++) {
+                const curDate = new Date(year, month, i);
+                mainGrid.appendChild(createCell(curDate, false));
+            }
+
+            // Next month fill days
+            const totalCellsRendered = firstDayIndex + lastDay;
+            const nextDays = (totalCellsRendered > 35 ? 42 : 35) - totalCellsRendered;
+            for (let j = 1; j <= nextDays; j++) {
+                const nextDate = new Date(year, month + 1, j);
+                mainGrid.appendChild(createCell(nextDate, true));
+            }
+        }
+
+        // --- RENDER WEEK VIEW ---
+        function renderWeekView() {
+            const startOfWeek = new Date(currentDate);
+            startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+            if (startOfWeek.getMonth() === endOfWeek.getMonth()) {
+                currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]} ${startOfWeek.getFullYear()}`;
+            } else {
+                currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]} - ${monthNames[endOfWeek.getMonth()]} ${startOfWeek.getFullYear()}`;
+            }
+
+            let weekDaysHTML = '';
+            let weekDaysArr = [];
+
+            for (let i = 0; i < 7; i++) {
+                const d = new Date(startOfWeek);
+                d.setDate(startOfWeek.getDate() + i);
+                weekDaysArr.push(d);
+
+                const isToday = (d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear());
+                weekDaysHTML += `
+                    <div class="week-day-header ${isToday ? 'today' : ''}">
+                        <div class="day-name">${dayNames[i]}</div>
+                        <div class="day-num">${d.getDate()}</div>
+                    </div>
+                `;
+            }
+
+            const hours = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM'];
+            let timeRowsHTML = '';
+
+            hours.forEach(hour => {
+                let cellsForHour = '';
+                weekDaysArr.forEach(dateObj => {
+                    const y = dateObj.getFullYear();
+                    const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+                    const day = String(dateObj.getDate()).padStart(2, '0');
+                    const dateKey = `${y}-${m}-${day}`;
+                    cellsForHour += `<div class="week-cell" data-date="${dateKey}"></div>`;
+                });
+
+                timeRowsHTML += `
+                    <div class="time-row">
+                        <div class="time-label">${hour}</div>
+                        ${cellsForHour}
+                    </div>
+                `;
+            });
+
+            calendarView.innerHTML = `
+                <div class="week-view-container">
+                    <div class="week-header">
+                        <div class="week-time-gutter-header"></div>
+                        ${weekDaysHTML}
+                    </div>
+                    <div class="week-body">
+                        ${timeRowsHTML}
+                    </div>
+                </div>
+            `;
+
+            weekDaysArr.forEach(dateObj => {
+                const y = dateObj.getFullYear();
+                const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+                const day = String(dateObj.getDate()).padStart(2, '0');
+                const dateKey = `${y}-${m}-${day}`;
+
+                const dayCells = calendarView.querySelectorAll(`.week-cell[data-date="${dateKey}"]`);
+                if (dayCells.length > 0) {
+                    const targetCell = dayCells[0];
+                    
+                    events.filter(e => e.date === dateKey).forEach(evt => {
+                        targetCell.appendChild(createEventElement(evt));
+                    });
+                }
+            });
+        }
+
+        // Cell Factory for Month View
+        function createCell(dateObj, isOtherMonth) {
+            const cell = document.createElement('div');
+            cell.className = 'cell' + (isOtherMonth ? ' other-month' : '');
+
+            const y = dateObj.getFullYear();
+            const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+            const d = String(dateObj.getDate()).padStart(2, '0');
+            const dateKey = `${y}-${m}-${d}`;
+            
+            cell.setAttribute('data-date', dateKey);
+
+            if (dateObj.getDate() === today.getDate() && dateObj.getMonth() === today.getMonth() && dateObj.getFullYear() === today.getFullYear()) {
+                cell.classList.add('today');
+            }
+
+            cell.innerHTML = `<div class="cell-number">${dateObj.getDate()}</div>`;
+
+            // Drag & Drop
+            cell.addEventListener('dragover', (e) => { e.preventDefault(); cell.classList.add('drag-over'); });
+            cell.addEventListener('dragleave', () => cell.classList.remove('drag-over'));
+            cell.addEventListener('drop', (e) => {
+                e.preventDefault();
+                cell.classList.remove('drag-over');
+                if (draggedEventId) {
+                    const targetDate = cell.getAttribute('data-date');
+                    const targetEvt = events.find(ev => ev.id === draggedEventId);
+                    if (targetEvt) {
+                        targetEvt.date = targetDate;
+                        saveEvents(events);
+                        renderCalendar();
+                    }
+                }
+            });
+
+            // Populate events
+            events.filter(e => e.date === dateKey).forEach(evt => {
+                cell.appendChild(createEventElement(evt));
+            });
+
+            return cell;
+        }
+
+        // Helper: Create Expandable Event Component
+        function createEventElement(evt) {
+            const evtDiv = document.createElement('div');
+            evtDiv.className = `event ${evt.cat}` + (evt.expanded ? ' expanded' : '');
+            evtDiv.setAttribute('draggable', 'true');
+
+            evtDiv.innerHTML = `
+                <div class="event-header">
+                    <span class="event-title">${evt.title}</span>
+                    <div class="event-actions">
+                        <button class="event-btn edit-btn-icon" title="Edit Event"><span class="material-icons-outlined" style="font-size:14px;">edit</span></button>
+                        <button class="event-btn toggle-btn-icon" title="Expand / Collapse"><span class="material-icons-outlined" style="font-size:16px;">${evt.expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</span></button>
+                    </div>
+                </div>
+                <div class="event-details">${evt.desc ? evt.desc : '<em>No description provided.</em>'}</div>
+            `;
+
+            evtDiv.addEventListener('dragstart', (e) => {
+                draggedEventId = evt.id;
+                evtDiv.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', evt.id);
+            });
+
+            evtDiv.addEventListener('dragend', () => {
+                evtDiv.classList.remove('dragging');
+                draggedEventId = null;
+            });
+
+            const toggleBtn = evtDiv.querySelector('.toggle-btn-icon');
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                evt.expanded = !evt.expanded;
+                saveEvents(events);
+                renderCalendar();
+            });
+
+            const editBtn = evtDiv.querySelector('.edit-btn-icon');
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openEditModal(evt);
+            });
+
+            evtDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+                evt.expanded = !evt.expanded;
+                saveEvents(events);
+                renderCalendar();
+            });
+
+            return evtDiv;
+        }
+
+        function renderMiniCalendar() {
+            miniDateDisplay.innerText = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
+            miniGrid.innerHTML = `
+                <div class="mini-day-name">S</div><div class="mini-day-name">M</div>
+                <div class="mini-day-name">T</div><div class="mini-day-name">W</div>
+                <div class="mini-day-name">T</div><div class="mini-day-name">F</div>
+                <div class="mini-day-name">S</div>
+            `;
+
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const lastDay = new Date(year, month + 1, 0).getDate();
+            const prevLastDay = new Date(year, month, 0).getDate();
+
+            for (let x = firstDayIndex; x > 0; x--) {
+                miniGrid.innerHTML += `<div class="mini-day other-month">${prevLastDay - x + 1}</div>`;
+            }
+
+            for (let i = 1; i <= lastDay; i++) {
+                let isActive = (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) ? 'active' : '';
+                miniGrid.innerHTML += `<div class="mini-day ${isActive}">${i}</div>`;
+            }
+        }
+
+        // Category Filters
+        function applyCategoryFilters() {
+            document.querySelectorAll('.cat-filter').forEach(checkbox => {
+                const category = checkbox.getAttribute('data-category');
+                const isChecked = checkbox.checked;
+                document.querySelectorAll(`.event.${category}`).forEach(el => {
+                    if (isChecked) el.classList.remove('hidden-category');
+                    else el.classList.add('hidden-category');
+                });
+            });
+        }
+
+        // Modal Helpers
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function openEditModal(evt) {
+            selectedEvent = evt;
+            document.getElementById('editEventTitle').value = evt.title;
+            document.getElementById('editEventCategory').value = evt.cat;
+            document.getElementById('editEventDate').value = evt.date;
+            document.getElementById('editEventDesc').value = evt.desc || '';
+            document.getElementById('editEventModal').style.display = 'flex';
+        }
+
+        document.getElementById('updateEventBtn').addEventListener('click', () => {
+            if (selectedEvent) {
+                selectedEvent.title = document.getElementById('editEventTitle').value;
+                selectedEvent.cat = document.getElementById('editEventCategory').value;
+                selectedEvent.date = document.getElementById('editEventDate').value;
+                selectedEvent.desc = document.getElementById('editEventDesc').value;
+                saveEvents(events);
+                closeModal('editEventModal');
+                renderCalendar();
+            }
+        });
+
+        document.getElementById('duplicateEventBtn').addEventListener('click', () => {
+            if (selectedEvent) {
+                events.push({
+                    id: Date.now(),
+                    title: `${selectedEvent.title} (Copy)`,
+                    cat: selectedEvent.cat,
+                    date: selectedEvent.date,
+                    desc: selectedEvent.desc,
+                    expanded: false
+                });
+                saveEvents(events);
+                closeModal('editEventModal');
+                renderCalendar();
+            }
+        });
+
+        document.getElementById('deleteEventBtn').addEventListener('click', () => {
+            if (selectedEvent) {
+                events = events.filter(e => e.id !== selectedEvent.id);
+                saveEvents(events);
+                closeModal('editEventModal');
+                renderCalendar();
+            }
+        });
+
+        // Add Event
+        document.getElementById('openCreateModal').addEventListener('click', () => {
+            document.getElementById('eventDate').value = '2026-09-16';
+            document.getElementById('eventDesc').value = '';
+            document.getElementById('createEventModal').style.display = 'flex';
+        });
+
+        document.getElementById('saveEventBtn').addEventListener('click', () => {
+            const title = document.getElementById('eventTitle').value;
+            const category = document.getElementById('eventCategory').value;
+            const dateVal = document.getElementById('eventDate').value;
+            const descVal = document.getElementById('eventDesc').value;
+
+            if (title && dateVal) {
+                events.push({
+                    id: Date.now(),
+                    title: title,
+                    cat: category,
+                    date: dateVal,
+                    desc: descVal,
+                    expanded: false
+                });
+                saveEvents(events);
+                document.getElementById('eventTitle').value = '';
+                document.getElementById('eventDesc').value = '';
+                closeModal('createEventModal');
+                renderCalendar();
+            }
+        });
+
+        function setTheme(themeName) {
+            document.body.className = themeName;
+        }
+
+        // Navigation Controls
+        document.getElementById('prevBtn').addEventListener('click', () => { 
+            if (currentView === 'month') currentDate.setMonth(currentDate.getMonth() - 1);
+            else currentDate.setDate(currentDate.getDate() - 7);
+            renderCalendar(); 
+        });
+
+        document.getElementById('nextBtn').addEventListener('click', () => { 
+            if (currentView === 'month') currentDate.setMonth(currentDate.getMonth() + 1);
+            else currentDate.setDate(currentDate.getDate() + 7);
+            renderCalendar(); 
+        });
+
+        document.getElementById('miniPrevBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
+        document.getElementById('miniNextBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
+        document.getElementById('todayBtn').addEventListener('click', () => { currentDate = new Date(2026, 8, 16); renderCalendar(); });
+        
+        // View Selector Switch
+        viewModeSelect.addEventListener('change', (e) => {
+            currentView = e.target.value;
+            renderCalendar();
+        });
+
+        document.getElementById('menuBtn').addEventListener('click', () => { sidebar.style.display = (sidebar.style.display === 'none') ? 'flex' : 'none'; });
+        document.getElementById('settingsBtn').addEventListener('click', () => document.getElementById('settingsModal').style.display = 'flex');
+
+        document.querySelectorAll('.cat-filter').forEach(cb => cb.addEventListener('change', applyCategoryFilters));
+
+        // Initial Boot
+        renderCalendar();
+    </script>
+</body>
+</html>
