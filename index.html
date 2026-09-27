@@ -1,908 +1,584 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- SGS Calendar V.1 - Full Gacha Pull & Dev Redeem Code Edition -->
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SGS Calendar V.1</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SGS Calendar - Responsive Layout Showcase</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts & Material Icons -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
 
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        saints: {
+                            navy: '#0B1320',
+                            surface: '#14213D',
+                            card: '#1C2D4B',
+                            red: '#C8102E',
+                            redHover: '#A00C23',
+                            gold: '#D4AF37',
+                            white: '#EAEFF5',
+                            muted: '#8B9BB4',
+                            border: '#243552',
+                            athletics: '#00A3E0',
+                            boarding: '#00E676',
+                            arts: '#D4AF37'
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+
     <style>
-        :root {
-            /* Default: Classic Navy (Common) */
-            --bg-main: #0B1320;
-            --bg-surface: #14213D;
-            --bg-card: #1C2D4B;
-            --saints-red: #C8102E;
-            --saints-red-hover: #A00C23;
-            --saints-gold: #D4AF37;
-            --saints-white: #EAEFF5;
-            --text-muted: #8B9BB4;
-            --border-color: #243552;
+        * { touch-action: manipulation; }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #0B1320; }
+        ::-webkit-scrollbar-thumb { background: #243552; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
 
-            /* Category Colors */
-            --cat-academics: #C8102E;
-            --cat-athletics: #00A3E0;
-            --cat-arts: #D4AF37;
-            --cat-boarding: #00E676;
-        }
+        .theme-navy { --bg-main: #0B1320; --bg-surface: #14213D; --bg-card: #1C2D4B; }
+        .theme-red { --bg-main: #1A0508; --bg-surface: #2E0B10; --bg-card: #42121A; }
+        .theme-slate { --bg-main: #181A1B; --bg-surface: #222527; --bg-card: #2D3135; }
+        .theme-emerald { --bg-main: #061810; --bg-surface: #0E2E20; --bg-card: #164230; }
+        .theme-cyberpunk { --bg-main: #0D0221; --bg-surface: #190535; --bg-card: #2C0B54; }
+        .theme-gold { --bg-main: #141006; --bg-surface: #241C0C; --bg-card: #382B14; }
+        .theme-black { --bg-main: #000000; --bg-surface: #0B0B0B; --bg-card: #161616; }
 
-        /* --- THEME VARIATIONS --- */
-        body.theme-navy {
-            --bg-main: #0B1320; --bg-surface: #14213D; --bg-card: #1C2D4B;
-            --saints-red: #C8102E; --saints-gold: #D4AF37; --border-color: #243552;
-        }
-        body.theme-red {
-            --bg-main: #1A0508; --bg-surface: #2E0B10; --bg-card: #42121A;
-            --saints-red: #E61938; --saints-gold: #D4AF37; --border-color: #591A23;
-        }
-        body.theme-slate {
-            --bg-main: #181A1B; --bg-surface: #222527; --bg-card: #2D3135;
-            --saints-red: #4A90E2; --saints-gold: #7ED321; --border-color: #3A3F45;
-        }
-        body.theme-emerald {
-            --bg-main: #061810; --bg-surface: #0E2E20; --bg-card: #164230;
-            --saints-red: #00E676; --saints-gold: #A7FFEB; --border-color: #1F5C43;
-        }
-        body.theme-cyberpunk {
-            --bg-main: #0D0221; --bg-surface: #190535; --bg-card: #2C0B54;
-            --saints-red: #FF007F; --saints-gold: #00F0FF; --border-color: #531282;
-        }
-        body.theme-gold {
-            --bg-main: #141006; --bg-surface: #241C0C; --bg-card: #382B14;
-            --saints-red: #D4AF37; --saints-gold: #FFD700; --border-color: #4D3B1C;
-        }
-        body.theme-black {
-            --bg-main: #000000; --bg-surface: #0B0B0B; --bg-card: #161616;
-            --saints-red: #FFFFFF; --saints-gold: #888888; --border-color: #2A2A2A;
-        }
-        body.theme-metal {
-            --bg-main: #1C1D21; --bg-surface: #2B2C31; --bg-card: #3A3B41;
-            --saints-red: #A0A5B5; --saints-gold: #E2E8F0; --border-color: #4E5058;
-        }
-        body.theme-nebula {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e) !important;
-            --bg-main: transparent; --bg-surface: rgba(20, 15, 45, 0.75); --bg-card: rgba(35, 25, 70, 0.75);
-            --saints-red: #FF758C; --saints-gold: #FF7EB3; --border-color: rgba(255, 255, 255, 0.15);
-        }
-        body.theme-supernova {
-            background: linear-gradient(135deg, #200122, #6f0000) !important;
-            --bg-main: transparent; --bg-surface: rgba(40, 5, 20, 0.75); --bg-card: rgba(70, 10, 35, 0.75);
-            --saints-red: #FF4E50; --saints-gold: #F9D423; --border-color: rgba(255, 255, 255, 0.15);
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--saints-white);
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-            overflow: hidden;
-            transition: background 0.3s, color 0.3s;
-        }
-
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-main); }
-        ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--saints-gold); }
-
-        /* HEADER */
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            background-color: var(--bg-surface);
-            border-bottom: 1px solid var(--border-color);
-            height: 64px;
-            flex-shrink: 0;
-            gap: 15px;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-left { display: flex; align-items: center; gap: 12px; }
-        .logo-container { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; letter-spacing: 0.5px; margin-right: 10px; }
-        .dragon-icon { color: var(--saints-gold); font-size: 28px; }
-        .school-name span { color: var(--saints-red); }
-
-        .btn {
-            background: none; border: none; color: var(--saints-white); cursor: pointer;
-            padding: 8px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            transition: background 0.2s;
-        }
-        .btn:hover { background-color: var(--border-color); }
-
-        .today-btn { border: 1px solid var(--border-color); border-radius: 4px; padding: 6px 16px; font-weight: 500; }
-        .today-btn:hover { background-color: var(--bg-card); }
-
-        .view-select {
-            background-color: var(--bg-card); color: var(--saints-white); border: 1px solid var(--border-color);
-            padding: 6px 12px; border-radius: 4px; outline: none; cursor: pointer; font-size: 0.85rem; font-weight: 500;
-        }
-
-        .current-date { font-size: 1.25rem; font-weight: 400; margin-left: 10px; min-width: 200px; }
-
-        /* SEARCH BAR */
-        .search-container {
-            display: flex; align-items: center; background-color: var(--bg-card);
-            border: 1px solid var(--border-color); border-radius: 20px; padding: 4px 12px; width: 220px;
-        }
-        .search-container span { font-size: 18px; color: var(--text-muted); margin-right: 6px; }
-        .search-input { background: transparent; border: none; color: var(--saints-white); outline: none; font-size: 0.85rem; width: 100%; }
-
-        /* TOKEN COUNTER HEADER BUTTON */
-        .token-badge {
-            display: flex; align-items: center; gap: 6px; background-color: var(--bg-card);
-            border: 1px solid var(--saints-gold); padding: 6px 14px; border-radius: 20px;
-            cursor: pointer; font-weight: 600; color: var(--saints-gold); font-size: 0.85rem; transition: transform 0.2s;
-        }
-        .token-badge:hover { transform: scale(1.05); }
-
-        .header-right { display: flex; align-items: center; gap: 10px; }
-        .user-avatar {
-            width: 36px; height: 36px; border-radius: 50%; background-color: var(--saints-red); color: white;
-            display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid var(--saints-gold);
-        }
-
-        /* MAIN LAYOUT */
-        .main-container { display: flex; flex: 1; overflow: hidden; }
-
-        sidebar {
-            width: 260px; background-color: var(--bg-surface); border-right: 1px solid var(--border-color);
-            padding: 15px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; overflow-y: auto; backdrop-filter: blur(10px);
-        }
-
-        .create-btn {
-            background-color: var(--saints-red); color: white; border: none; border-radius: 24px; padding: 12px 24px;
-            font-size: 0.9rem; font-weight: 500; display: flex; align-items: center; gap: 12px; cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: background 0.2s; width: fit-content;
-        }
-        .create-btn:hover { background-color: var(--saints-red-hover); }
-
-        .mini-calendar { width: 100%; }
-        .mini-header { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; margin-bottom: 10px; font-weight: 500; }
-        .mini-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; font-size: 0.75rem; }
-        .mini-grid div { padding: 6px 0; border-radius: 50%; }
-        .mini-day-name { color: var(--text-muted); font-weight: bold; }
-        .mini-day { cursor: pointer; color: var(--saints-white); }
-        .mini-day:hover { background-color: var(--bg-card); }
-        .mini-day.active { background-color: var(--saints-red); color: white; }
-        .mini-day.other-month { color: var(--text-muted); opacity: 0.4; }
-
-        .calendars-list { display: flex; flex-direction: column; gap: 10px; }
-        .calendars-title { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-muted); margin-bottom: 5px; }
-        .checkbox-group { display: flex; align-items: center; gap: 10px; font-size: 0.85rem; cursor: pointer; }
-        .checkbox-group input { cursor: pointer; width: 16px; height: 16px; }
-
-        /* CALENDAR VIEW AREA */
-        .calendar-view { flex: 1; display: flex; flex-direction: column; background-color: var(--bg-main); overflow: auto; }
-        .days-header {
-            display: grid; grid-template-columns: repeat(7, 1fr); border-bottom: 1px solid var(--border-color);
-            background-color: var(--bg-surface); min-width: 900px; position: sticky; top: 0; z-index: 10;
-        }
-        .day-label { padding: 10px; text-align: center; font-size: 0.8rem; font-weight: 500; color: var(--text-muted); border-right: 1px solid var(--border-color); }
-        .month-grid {
-            flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(5, minmax(120px, auto));
-            border-bottom: 1px solid var(--border-color); min-width: 900px;
-        }
-
-        .cell {
-            border-right: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); padding: 5px;
-            display: flex; flex-direction: column; gap: 4px; overflow-y: auto; min-height: 120px;
-        }
-        .cell:hover { background-color: rgba(255, 255, 255, 0.02); }
-        .cell-number {
-            font-size: 0.75rem; font-weight: 500; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
-            border-radius: 50%; margin-bottom: 2px; color: var(--text-muted); pointer-events: none; flex-shrink: 0;
-        }
-        .cell.today .cell-number { background-color: var(--saints-red); color: white; font-weight: bold; }
-        .cell.other-month { opacity: 0.3; }
-
-        /* WEEK VIEW */
-        .week-view-container { display: flex; flex-direction: column; min-width: 900px; flex: 1; }
-        .week-header {
-            display: grid; grid-template-columns: 60px repeat(7, 1fr); border-bottom: 1px solid var(--border-color);
-            background-color: var(--bg-surface); position: sticky; top: 0; z-index: 10;
-        }
-        .week-time-gutter-header { border-right: 1px solid var(--border-color); }
-        .week-day-header { padding: 10px; text-align: center; border-right: 1px solid var(--border-color); }
-        .week-day-header .day-name { font-size: 0.75rem; color: var(--text-muted); }
-        .week-day-header .day-num { font-size: 1.1rem; font-weight: bold; margin-top: 2px; }
-        .week-day-header.today .day-num { color: var(--saints-red); }
-
-        .time-row { display: grid; grid-template-columns: 60px repeat(7, 1fr); min-height: 60px; border-bottom: 1px solid var(--border-color); }
-        .time-label { font-size: 0.7rem; color: var(--text-muted); text-align: right; padding-right: 8px; padding-top: 4px; border-right: 1px solid var(--border-color); }
-        .week-cell { border-right: 1px solid var(--border-color); padding: 4px; display: flex; flex-direction: column; gap: 4px; }
-
-        /* EVENTS */
-        .event {
-            font-size: 0.75rem; border-radius: 4px; color: white; cursor: grab; font-weight: 500;
-            user-select: none; display: flex; flex-direction: column; overflow: hidden;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3); flex-shrink: 0;
-        }
-        .event-header { display: flex; align-items: center; justify-content: space-between; padding: 4px 6px; }
-        .event-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
-        .event-actions { display: flex; align-items: center; gap: 2px; }
-        .event-btn { background: none; border: none; color: inherit; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; opacity: 0.8; border-radius: 3px; }
-        .event-details { display: none; padding: 6px; font-size: 0.7rem; font-weight: 400; background: rgba(0, 0, 0, 0.25); border-top: 1px solid rgba(255, 255, 255, 0.15); white-space: pre-wrap; word-break: break-word; }
-        .event.expanded .event-details { display: block; }
-
-        .event.academics { background-color: var(--cat-academics); }
-        .event.athletics { background-color: var(--cat-athletics); color: #000; }
-        .event.arts { background-color: var(--cat-arts); color: #000; }
-        .event.boarding { background-color: var(--cat-boarding); color: #000; }
-
-        /* MODALS */
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); justify-content: center; align-items: center; z-index: 100;
-        }
-
-        .modal-content {
-            background-color: var(--bg-surface); border: 1px solid var(--border-color);
-            border-radius: 8px; width: 440px; padding: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; gap: 15px; max-height: 90vh; overflow-y: auto;
-        }
-
-        .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 1.1rem; font-weight: 500; }
-        .modal-content input, .modal-content select, .modal-content textarea {
-            width: 100%; padding: 10px; background-color: var(--bg-card);
-            border: 1px solid var(--border-color); color: white; border-radius: 4px; outline: none;
-        }
-
-        .modal-footer { display: flex; justify-content: flex-end; gap: 10px; }
-        .save-btn { background-color: var(--saints-red); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
-        .delete-btn { background-color: #D32F2F; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; margin-right: auto; }
-
-        .pull-banner {
-            background: linear-gradient(135deg, #FFD700, #FF007F);
-            color: black; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px;
-        }
-        .pull-banner:hover { transform: scale(1.02); }
-
-        /* REDEEM CODE SECTION */
-        .redeem-container {
-            display: flex; gap: 8px; background-color: var(--bg-card); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color);
-        }
-        .redeem-input {
-            flex: 1; padding: 6px 10px !important; font-size: 0.8rem; text-transform: lowercase;
-        }
-        .redeem-btn {
-            background-color: var(--saints-gold); color: black; font-weight: bold; border: none;
-            padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; white-space: nowrap;
-        }
-
-        .rates-table { font-size: 0.75rem; color: var(--text-muted); display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; text-align: center; margin-top: 5px; }
-
-        .tier-label { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; margin-bottom: 5px; }
-        .tier-common { color: #A0A5B5; }
-        .tier-rare { color: #00A3E0; }
-        .tier-epic { color: #A000FF; }
-        .tier-legendary { color: #FFD700; }
-        .tier-mythical { color: #FF007F; }
-
-        .gacha-item {
-            display: flex; align-items: center; justify-content: space-between;
-            background-color: var(--bg-card); border: 1px solid var(--border-color); padding: 10px 12px; border-radius: 6px; margin-bottom: 8px;
-        }
-
-        .gacha-item-info { display: flex; align-items: center; gap: 10px; }
-        .gacha-preview { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.3); }
-
-        .apply-btn {
-            background-color: var(--saints-red); color: white; font-weight: bold;
-            border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.75rem;
-        }
-
-        .hidden-category, .hidden-search { display: none !important; }
-
-        /* PULL REVEAL MODAL */
-        .reveal-box {
-            text-align: center; display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 20px;
-        }
-        .reveal-title { font-size: 1.4rem; font-weight: bold; }
-        .reveal-swatch { width: 80px; height: 80px; border-radius: 50%; border: 3px solid white; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+        .app-bg-surface { background-color: var(--bg-surface, #14213D); }
+        .app-bg-card { background-color: var(--bg-card, #1C2D4B); }
+        .app-bg-main { background-color: var(--bg-main, #0B1320); }
     </style>
 </head>
-<body class="theme-navy">
+<body class="bg-saints-navy text-saints-white h-screen flex flex-col overflow-hidden theme-navy">
 
-    <!-- HEADER -->
-    <header>
-        <div class="header-left">
-            <button class="btn" id="menuBtn" title="Toggle Sidebar"><span class="material-icons-outlined">menu</span></button>
-            <div class="logo-container">
-                <span class="material-icons-outlined dragon-icon">workspace_premium</span>
-                <div class="school-name">SGS <span>CALENDAR V.1</span></div>
+    <header class="h-16 bg-saints-surface border-b border-saints-border flex items-center justify-between px-3 md:px-6 flex-shrink-0 z-30 app-bg-surface">
+        <div class="flex items-center gap-2 md:gap-4">
+            <button id="sidebarToggleBtn" class="p-2 rounded-full hover:bg-saints-card text-saints-white md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center">
+                <span class="material-icons-outlined">menu</span>
+            </button>
+            <div class="flex items-center gap-2 font-bold text-base md:text-lg">
+                <span class="material-icons-outlined text-saints-gold text-2xl">grid_view</span>
+                <span class="hidden sm:inline tracking-wide">SGS <span class="text-saints-red">LAYOUTS</span></span>
             </div>
-            <button class="btn today-btn" id="todayBtn">Today</button>
-            <button class="btn" id="prevBtn" title="Previous"><span class="material-icons-outlined">chevron_left</span></button>
-            <button class="btn" id="nextBtn" title="Next"><span class="material-icons-outlined">chevron_right</span></button>
             
-            <select class="view-select" id="viewModeSelect">
-                <option value="month">Month View</option>
-                <option value="week">Week View</option>
-            </select>
-
-            <div class="current-date" id="currentDateDisplay">Sept 2026</div>
-        </div>
-
-        <!-- SEARCH BAR -->
-        <div class="search-container">
-            <span class="material-icons-outlined">search</span>
-            <input type="text" id="searchInput" class="search-input" placeholder="Search events...">
-        </div>
-
-        <div class="header-right">
-            <!-- TOKEN BUTTON -->
-            <div class="token-badge" id="tokenBadge" title="Open Theme Vault">
-                <span class="material-icons-outlined">stars</span>
-                <span id="tokenCount">0 Tokens</span>
+            <div id="viewportBadge" class="bg-saints-card text-saints-gold border border-saints-gold/30 text-[11px] font-mono px-2.5 py-1 rounded-full flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="breakpointText">Mobile (&lt;640px)</span>
             </div>
+        </div>
 
-            <button class="btn" id="settingsBtn" title="Settings / Theme Vault"><span class="material-icons-outlined">casino</span></button>
-            <div class="user-avatar" title="Saints Boy">SG</div>
+        <!-- Global Search -->
+        <div class="hidden sm:flex items-center bg-saints-card border border-saints-border rounded-full px-3 py-1.5 w-40 md:w-64 focus-within:w-72 transition-all">
+            <span class="material-icons-outlined text-saints-muted text-sm mr-2">search</span>
+            <input type="text" id="globalSearchInput" placeholder="Search events..." class="bg-transparent border-none text-xs md:text-sm text-saints-white focus:outline-none w-full">
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button id="tokenVaultBtn" class="flex items-center gap-1.5 bg-saints-card border border-saints-gold px-3 py-1.5 rounded-full text-xs md:text-sm font-semibold text-saints-gold hover:scale-105 transition-transform min-h-[44px]">
+                <span class="material-icons-outlined text-base">stars</span>
+                <span id="tokenBadgeCount">0 Tokens</span>
+            </button>
         </div>
     </header>
 
-    <!-- MAIN CONTAINER -->
-    <div class="main-container">
-        <!-- SIDEBAR -->
-        <sidebar id="sidebar">
-            <button class="create-btn" id="openCreateModal">
-                <span class="material-icons-outlined">add</span>
+    <section class="bg-saints-card border-b border-saints-border px-3 py-2 flex flex-wrap items-center justify-between gap-2 z-20 text-xs md:text-sm app-bg-card">
+        <div class="flex items-center gap-2 font-medium">
+            <span class="text-saints-gold font-semibold uppercase text-[10px] tracking-wider bg-saints-navy px-2 py-0.5 rounded border border-saints-border">Layout Switcher</span>
+            <span class="hidden md:inline text-saints-muted">Active Responsive Pattern:</span>
+        </div>
+
+        <div class="flex items-center gap-1 bg-saints-navy p-1 rounded-lg border border-saints-border overflow-x-auto max-w-full">
+            <button class="layout-btn active px-3 py-1.5 rounded-md font-medium transition-all text-xs flex items-center gap-1 bg-saints-red text-white" data-layout="grid">
+                <span class="material-icons-outlined text-sm">grid_on</span> Layout 1: Card Grid
+            </button>
+            <button class="layout-btn px-3 py-1.5 rounded-md font-medium transition-all text-xs flex items-center gap-1 text-saints-muted hover:text-white" data-layout="kanban">
+                <span class="material-icons-outlined text-sm">view_column</span> Layout 2: Kanban Split
+            </button>
+            <button class="layout-btn px-3 py-1.5 rounded-md font-medium transition-all text-xs flex items-center gap-1 text-saints-muted hover:text-white" data-layout="dashboard">
+                <span class="material-icons-outlined text-sm">dashboard</span> Layout 3: Master-Detail
+            </button>
+        </div>
+    </section>
+
+    <div class="flex flex-1 overflow-hidden relative">
+        <div id="drawerBackdrop" class="fixed inset-0 bg-black/60 z-30 hidden md:hidden backdrop-blur-sm transition-opacity"></div>
+
+        <aside id="appSidebar" class="fixed md:static inset-y-0 left-0 w-72 bg-saints-surface border-r border-saints-border p-4 flex flex-col gap-5 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out app-bg-surface overflow-y-auto">
+            <div class="flex items-center justify-between md:hidden pb-2 border-b border-saints-border">
+                <span class="font-bold text-saints-gold text-sm">SGS Navigation</span>
+                <button id="closeDrawerBtn" class="p-1 rounded-full text-saints-muted hover:text-white min-w-[44px] min-h-[44px] flex items-center justify-center">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+            </div>
+
+            <button id="openCreateEventModalBtn" class="bg-saints-red hover:bg-saints-redHover text-white font-semibold py-3 px-5 rounded-xl shadow-lg flex items-center justify-center gap-3 transition-transform active:scale-95 min-h-[44px]">
+                <span class="material-icons-outlined">add_circle</span>
                 <span>Create Event</span>
             </button>
 
-            <!-- MINI CALENDAR -->
-            <div class="mini-calendar">
-                <div class="mini-header">
-                    <span id="miniDateDisplay">Sept 2026</span>
+            <!-- Category Filters -->
+            <div class="flex flex-col gap-2.5">
+                <span class="text-[11px] font-bold uppercase tracking-wider text-saints-muted">Saints Categories</span>
+                
+                <label class="flex items-center justify-between p-2 rounded-lg bg-saints-card/50 border border-saints-border cursor-pointer hover:bg-saints-card min-h-[44px]">
+                    <span class="flex items-center gap-2 text-xs font-medium">
+                        <span class="w-3 h-3 rounded-full bg-saints-red"></span> Academics
+                    </span>
+                    <input type="checkbox" class="cat-filter accent-saints-red w-4 h-4" data-cat="academics" checked>
+                </label>
+
+                <label class="flex items-center justify-between p-2 rounded-lg bg-saints-card/50 border border-saints-border cursor-pointer hover:bg-saints-card min-h-[44px]">
+                    <span class="flex items-center gap-2 text-xs font-medium">
+                        <span class="w-3 h-3 rounded-full bg-saints-athletics"></span> Athletics
+                    </span>
+                    <input type="checkbox" class="cat-filter accent-saints-athletics w-4 h-4" data-cat="athletics" checked>
+                </label>
+
+                <label class="flex items-center justify-between p-2 rounded-lg bg-saints-card/50 border border-saints-border cursor-pointer hover:bg-saints-card min-h-[44px]">
+                    <span class="flex items-center gap-2 text-xs font-medium">
+                        <span class="w-3 h-3 rounded-full bg-saints-arts"></span> Fine Arts
+                    </span>
+                    <input type="checkbox" class="cat-filter accent-saints-arts w-4 h-4" data-cat="arts" checked>
+                </label>
+
+                <label class="flex items-center justify-between p-2 rounded-lg bg-saints-card/50 border border-saints-border cursor-pointer hover:bg-saints-card min-h-[44px]">
+                    <span class="flex items-center gap-2 text-xs font-medium">
+                        <span class="w-3 h-3 rounded-full bg-saints-boarding"></span> Harker Boarding
+                    </span>
+                    <input type="checkbox" class="cat-filter accent-saints-boarding w-4 h-4" data-cat="boarding" checked>
+                </label>
+            </div>
+
+            <!-- Current Layout Info Box -->
+            <div class="mt-auto p-3 rounded-xl bg-saints-navy border border-saints-border text-xs flex flex-col gap-1">
+                <span class="text-saints-gold font-semibold flex items-center gap-1">
+                    <span class="material-icons-outlined text-sm">code</span> CSS Breakpoint Spec
+                </span>
+                <span id="layoutSpecText" class="text-saints-muted text-[11px] font-mono leading-relaxed">
+                    grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+                </span>
+            </div>
+        </aside>
+
+        <!-- Main Viewport Container -->
+        <main class="flex-1 flex flex-col overflow-y-auto p-4 md:p-6 bg-saints-navy app-bg-main" id="mainViewportContainer">
+            <div id="layoutRenderNode" class="w-full h-full"></div>
+        </main>
+    </div>
+
+    <nav class="md:hidden h-14 bg-saints-surface border-t border-saints-border flex items-center justify-around z-20 px-2 app-bg-surface">
+        <button id="mobileNavAdd" class="flex flex-col items-center justify-center text-saints-red hover:scale-110 transition-transform min-w-[44px] min-h-[44px]">
+            <span class="material-icons-outlined text-2xl">add_circle</span>
+            <span class="text-[10px] font-bold">New</span>
+        </button>
+        <button id="mobileNavVault" class="flex flex-col items-center justify-center text-saints-gold min-w-[44px] min-h-[44px]">
+            <span class="material-icons-outlined text-lg">stars</span>
+            <span class="text-[10px]">Vault</span>
+        </button>
+    </nav>
+
+    <div id="toastContainer" class="fixed bottom-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Event Modal -->
+    <div id="eventModal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-saints-surface border border-saints-border rounded-2xl w-full max-w-md p-5 shadow-2xl flex flex-col gap-4 app-bg-surface">
+            <div class="flex items-center justify-between border-b border-saints-border pb-3">
+                <h3 id="eventModalTitle" class="font-bold text-base text-saints-white">Create Saints Event</h3>
+                <button class="closeModalBtn text-saints-muted hover:text-white p-1 min-w-[44px] min-h-[44px] flex items-center justify-center"><span class="material-icons-outlined">close</span></button>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <div>
+                    <label class="text-xs font-medium text-saints-muted mb-1 block">Event Title</label>
+                    <input type="text" id="inputEventTitle" placeholder="e.g. AP Calculus Exam" class="w-full bg-saints-card border border-saints-border rounded-lg p-2.5 text-sm text-white focus:outline-none focus:border-saints-gold">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
                     <div>
-                        <span class="material-icons-outlined" id="miniPrevBtn" style="font-size: 16px; cursor:pointer;">chevron_left</span>
-                        <span class="material-icons-outlined" id="miniNextBtn" style="font-size: 16px; cursor:pointer;">chevron_right</span>
+                        <label class="text-xs font-medium text-saints-muted mb-1 block">Category</label>
+                        <select id="inputEventCategory" class="w-full bg-saints-card border border-saints-border rounded-lg p-2.5 text-xs text-white focus:outline-none">
+                            <option value="academics">Academics</option>
+                            <option value="athletics">Athletics</option>
+                            <option value="arts">Fine Arts</option>
+                            <option value="boarding">Harker Boarding</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-saints-muted mb-1 block">Date</label>
+                        <input type="date" id="inputEventDate" class="w-full bg-saints-card border border-saints-border rounded-lg p-2 text-xs text-white focus:outline-none">
                     </div>
                 </div>
-                <div class="mini-grid" id="miniGrid"></div>
+
+                <div>
+                    <label class="text-xs font-medium text-saints-muted mb-1 block">Description</label>
+                    <textarea id="inputEventDesc" rows="3" placeholder="Additional event details..." class="w-full bg-saints-card border border-saints-border rounded-lg p-2.5 text-xs text-white focus:outline-none focus:border-saints-gold resize-none"></textarea>
+                </div>
             </div>
 
-            <!-- CALENDAR TOGGLES -->
-            <div class="calendars-list">
-                <div class="calendars-title">Saints Calendars</div>
-                <label class="checkbox-group">
-                    <input type="checkbox" class="cat-filter" data-category="academics" checked style="accent-color: var(--cat-academics)">
-                    <span>Academics & APs</span>
-                </label>
-                <label class="checkbox-group">
-                    <input type="checkbox" class="cat-filter" data-category="athletics" checked style="accent-color: var(--cat-athletics)">
-                    <span>Athletics (1st Teams)</span>
-                </label>
-                <label class="checkbox-group">
-                    <input type="checkbox" class="cat-filter" data-category="arts" checked style="accent-color: var(--cat-arts)">
-                    <span>Arts & Music</span>
-                </label>
-                <label class="checkbox-group">
-                    <input type="checkbox" class="cat-filter" data-category="boarding" checked style="accent-color: var(--cat-boarding)">
-                    <span>Harker Hall (Boarding)</span>
-                </label>
-            </div>
-        </sidebar>
-
-        <!-- MAIN CALENDAR VIEW CONTAINER -->
-        <div class="calendar-view" id="calendarView"></div>
-    </div>
-
-    <!-- CREATE EVENT MODAL -->
-    <div class="modal" id="createEventModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Add Saints Event</span>
-                <button class="btn" onclick="closeModal('createEventModal')"><span class="material-icons-outlined">close</span></button>
-            </div>
-            <input type="text" placeholder="Event Title" id="eventTitle">
-            <select id="eventCategory">
-                <option value="academics">Academics</option>
-                <option value="athletics">Athletics</option>
-                <option value="arts">Arts & Music</option>
-                <option value="boarding">Harker Hall Boarding</option>
-            </select>
-            <input type="date" id="eventDate">
-            <textarea placeholder="Event Description / Notes..." id="eventDesc"></textarea>
-            <div class="modal-footer">
-                <button class="save-btn" id="saveEventBtn">Save Event</button>
+            <div class="flex items-center justify-end gap-2 pt-2 border-t border-saints-border">
+                <button id="deleteEventBtn" class="hidden bg-red-600/20 hover:bg-red-600/40 text-red-400 font-semibold text-xs px-4 py-2.5 rounded-lg border border-red-500/30 transition-colors mr-auto min-h-[44px]">Delete</button>
+                <button class="closeModalBtn bg-saints-card hover:bg-saints-navy text-xs text-saints-white font-medium px-4 py-2.5 rounded-lg border border-saints-border min-h-[44px]">Cancel</button>
+                <button id="saveEventSubmitBtn" class="bg-saints-red hover:bg-saints-redHover text-xs text-white font-semibold px-5 py-2.5 rounded-lg transition-colors min-h-[44px]">Save Event</button>
             </div>
         </div>
     </div>
 
-    <!-- EDIT EVENT MODAL -->
-    <div class="modal" id="editEventModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Edit Event</span>
-                <button class="btn" onclick="closeModal('editEventModal')"><span class="material-icons-outlined">close</span></button>
-            </div>
-            <input type="text" id="editEventTitle">
-            <select id="editEventCategory">
-                <option value="academics">Academics</option>
-                <option value="athletics">Athletics</option>
-                <option value="arts">Arts & Music</option>
-                <option value="boarding">Harker Hall Boarding</option>
-            </select>
-            <input type="date" id="editEventDate">
-            <textarea placeholder="Event Description / Notes..." id="editEventDesc"></textarea>
-            <div class="modal-footer">
-                <button class="delete-btn" id="deleteEventBtn">Delete</button>
-                <button class="save-btn" id="updateEventBtn">Save Changes</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- GACHA / THEMES MODAL -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <span>Theme Vault & Token System</span>
-                <button class="btn" onclick="closeModal('settingsModal')"><span class="material-icons-outlined">close</span></button>
-            </div>
-            
-            <div style="background:var(--bg-card); padding:10px; border-radius:6px; border:1px solid var(--border-color); text-align:center;">
-                <div style="font-weight:bold; color:var(--saints-gold); font-size:0.9rem;" id="timerDisplay">Next Free Token: 24h 00m</div>
+    <!-- Theme Vault & Redeem Code Modal -->
+    <div id="vaultModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-saints-surface border border-saints-border rounded-2xl w-full max-w-lg p-5 shadow-2xl flex flex-col gap-4 max-h-[90vh] overflow-hidden app-bg-surface">
+            <div class="flex items-center justify-between border-b border-saints-border pb-3">
+                <div class="flex items-center gap-2">
+                    <span class="material-icons-outlined text-saints-gold">auto_awesome</span>
+                    <h3 class="font-bold text-base text-saints-white">Theme Vault & Redeem</h3>
+                </div>
+                <button class="closeModalBtn text-saints-muted hover:text-white p-1 min-w-[44px] min-h-[44px] flex items-center justify-center"><span class="material-icons-outlined">close</span></button>
             </div>
 
-            <!-- REDEEM CODE FORM -->
-            <div class="redeem-container">
-                <input type="text" id="redeemInput" class="redeem-input" placeholder="Enter Dev Code...">
-                <button class="redeem-btn" id="redeemBtn">Redeem</button>
+            <!-- Developer Secret Redeem Code Input -->
+            <div class="bg-saints-navy/90 border border-saints-gold/50 p-3 rounded-xl flex flex-col gap-2">
+                <label class="text-[11px] font-bold text-saints-gold uppercase tracking-wider flex items-center gap-1">
+                    <span class="material-icons-outlined text-xs">code</span> Secret Code Unlock
+                </label>
+                <div class="flex gap-2">
+                    <input type="text" id="developerRedeemInput" placeholder="Enter code (happybirthdaydaniel)..." class="flex-1 bg-saints-card border border-saints-border rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-saints-gold">
+                    <button id="redeemCodeBtn" class="bg-saints-gold hover:bg-yellow-500 text-black font-bold text-xs px-4 py-2 rounded-lg transition-colors min-h-[44px] flex items-center gap-1">
+                        <span class="material-icons-outlined text-sm">key</span> Redeem
+                    </button>
+                </div>
             </div>
 
-            <!-- PULL BUTTON -->
-            <div class="pull-banner" id="pullBtn">
+            <button id="gachaPullBtn" class="bg-gradient-to-r from-yellow-500 via-pink-600 to-purple-600 hover:opacity-95 text-white font-bold py-3 px-4 rounded-xl shadow-lg flex items-center justify-center gap-2 transition-transform active:scale-95 min-h-[44px]">
                 <span class="material-icons-outlined">casino</span>
-                <span>PULL FOR THEME (1 TOKEN)</span>
-            </div>
+                <span>PULL THEME (1 TOKEN)</span>
+            </button>
 
-            <!-- DROP RATES TABLE -->
-            <div class="rates-table">
-                <div class="tier-common">Common<br><b>40%</b></div>
-                <div class="tier-rare">Rare<br><b>30%</b></div>
-                <div class="tier-epic">Epic<br><b>20%</b></div>
-                <div class="tier-legendary">Legendary<br><b>8%</b></div>
-                <div class="tier-mythical">Mythical<br><b>2%</b></div>
-            </div>
+            <div id="vaultThemesList" class="flex-1 overflow-y-auto flex flex-col gap-2 pr-1 max-h-[220px]"></div>
 
-            <div id="gachaThemeList"></div>
-
-            <div class="modal-footer">
-                <button class="save-btn" onclick="closeModal('settingsModal')">Done</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PULL REVEAL MODAL -->
-    <div class="modal" id="revealModal">
-        <div class="modal-content" style="width:340px;">
-            <div class="reveal-box">
-                <div class="reveal-title" id="revealTierTitle">COMMON</div>
-                <div class="reveal-swatch" id="revealSwatch"></div>
-                <div id="revealName" style="font-weight:bold; font-size:1.1rem;">Theme Name</div>
-                <div style="font-size:0.8rem; color:var(--text-muted);" id="revealSubText">Unlocked & Applied!</div>
-                <button class="save-btn" onclick="closeModal('revealModal')">Awesome!</button>
+            <div class="flex justify-end pt-2 border-t border-saints-border">
+                <button class="closeModalBtn bg-saints-card hover:bg-saints-navy text-xs text-saints-white font-semibold px-5 py-2.5 rounded-lg border border-saints-border min-h-[44px]">Close</button>
             </div>
         </div>
     </div>
 
     <script>
-        const STORAGE_KEY = 'SGS_CALENDAR_EVENTS_CLEAN_V2';
-        const THEME_KEY = 'SGS_CALENDAR_THEME';
-        const TOKENS_KEY = 'SGS_CALENDAR_TOKENS';
-        const UNLOCKED_KEY = 'SGS_CALENDAR_UNLOCKED_THEMES';
-        const LAST_CLAIM_KEY = 'SGS_CALENDAR_LAST_CLAIM';
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            if (!container) return;
 
-        const THEMES_VAULT = [
-            { id: 'theme-navy', name: 'Classic Saints Navy', tier: 'common', color: '#14213D' },
-            { id: 'theme-red', name: 'Crimson Red', tier: 'common', color: '#2E0B10' },
-            { id: 'theme-slate', name: 'Midnight Slate', tier: 'rare', color: '#222527' },
-            { id: 'theme-emerald', name: 'Emerald Guard', tier: 'rare', color: '#0E2E20' },
-            { id: 'theme-cyberpunk', name: 'Cyberpunk Neon', tier: 'epic', color: '#190535' },
-            { id: 'theme-gold', name: 'Harker Hall Gold', tier: 'epic', color: '#241C0C' },
-            { id: 'theme-black', name: 'Pure Black Void', tier: 'legendary', color: '#000000' },
-            { id: 'theme-metal', name: 'Titanium Brushed Metal', tier: 'legendary', color: '#2B2C31' },
-            { id: 'theme-nebula', name: 'Cosmic Nebula Gradient', tier: 'mythical', color: 'linear-gradient(135deg, #0f0c29, #302b63, #24243e)' },
-            { id: 'theme-supernova', name: 'Dragon Supernova Gradient', tier: 'mythical', color: 'linear-gradient(135deg, #200122, #6f0000)' }
+            const toast = document.createElement('div');
+            const bgClass = type === 'success' ? 'bg-emerald-600' : type === 'error' ? 'bg-red-600' : 'bg-saints-card';
+            toast.className = `${bgClass} text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-2xl border border-white/20 flex items-center gap-2 pointer-events-auto transition-all transform translate-y-2 opacity-0`;
+            toast.innerHTML = `<span class="material-icons-outlined text-sm">${type === 'success' ? 'check_circle' : type === 'error' ? 'error' : 'info'}</span><span>${message}</span>`;
+            
+            container.appendChild(toast);
+            setTimeout(() => toast.classList.remove('translate-y-2', 'opacity-0'), 10);
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        const STORAGE_EVENTS_KEY = 'SGS_ARCH_EVENTS_V5';
+        const STORAGE_TOKENS_KEY = 'SGS_ARCH_TOKENS_V5';
+        const STORAGE_THEME_KEY = 'SGS_ARCH_THEME_V5';
+        const STORAGE_UNLOCKED_KEY = 'SGS_ARCH_UNLOCKED_V5';
+
+        const INITIAL_EVENTS = [
+            { id: 101, title: 'AP Physics Midterm', cat: 'academics', date: '2026-09-15', desc: 'Room 302 - Scientific Calculator Required' },
+            { id: 102, title: 'Saints Soccer Match', cat: 'athletics', date: '2026-09-18', desc: 'Chanticleer Field - Kickoff vs VC' },
+            { id: 103, title: 'Senior Jazz Ensemble', cat: 'arts', date: '2026-09-22', desc: 'Main Auditorium - Formal Dress' },
+            { id: 104, title: 'Harker Hall BBQ', cat: 'boarding', date: '2026-09-25', desc: 'Boarding Quadrangle - Evening Social' },
+            { id: 105, title: 'Robotics Team Demo', cat: 'academics', date: '2026-09-28', desc: 'Innovation Lab - Autonomous Code Presentation' },
+            { id: 106, title: 'Cross Country Meet', cat: 'athletics', date: '2026-10-02', desc: 'Spreckels Park - Regional Qualifier' }
         ];
 
-        function loadEvents() {
-            const stored = localStorage.getItem(STORAGE_KEY);
-            return stored ? JSON.parse(stored) : [];
+        function getStoredEvents() {
+            try {
+                const data = localStorage.getItem(STORAGE_EVENTS_KEY);
+                return data ? JSON.parse(data) : INITIAL_EVENTS;
+            } catch (e) { return INITIAL_EVENTS; }
         }
 
-        function saveEvents(data) { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
-
-        let tokens = parseInt(localStorage.getItem(TOKENS_KEY)) || 0;
-        let unlockedThemes = JSON.parse(localStorage.getItem(UNLOCKED_KEY)) || ['theme-navy', 'theme-red'];
-        let lastClaim = parseInt(localStorage.getItem(LAST_CLAIM_KEY)) || 0;
-
-        function updateTokenDisplay() {
-            document.getElementById('tokenCount').innerText = `${tokens.toLocaleString()} Token${tokens === 1 ? '' : 's'}`;
+        function saveStoredEvents(events) {
+            try { localStorage.setItem(STORAGE_EVENTS_KEY, JSON.stringify(events)); } catch (e) {}
         }
 
-        function checkDailyToken() {
-            const now = Date.now();
-            const oneDay = 24 * 60 * 60 * 1000;
-            if (now - lastClaim >= oneDay) {
-                tokens += 1;
-                lastClaim = now;
-                localStorage.setItem(TOKENS_KEY, tokens);
-                localStorage.setItem(LAST_CLAIM_KEY, lastClaim);
-                updateTokenDisplay();
+        let currentActiveLayout = 'grid';
+        let searchQuery = '';
+        let activeCategories = new Set(['academics', 'athletics', 'arts', 'boarding']);
+
+        function renderCurrentLayout() {
+            const container = document.getElementById('layoutRenderNode');
+            const layoutSpecText = document.getElementById('layoutSpecText');
+            if (!container) return;
+
+            const events = getStoredEvents().filter(e => {
+                const matchesCat = activeCategories.has(e.cat);
+                const matchesSearch = !searchQuery || e.title.toLowerCase().includes(searchQuery) || (e.desc && e.desc.toLowerCase().includes(searchQuery));
+                return matchesCat && matchesSearch;
+            });
+
+            container.innerHTML = '';
+
+            if (currentActiveLayout === 'grid') {
+                // Layout 1: grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4
+                layoutSpecText.innerText = "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+                
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 w-full";
+                
+                events.forEach(evt => grid.appendChild(createEventCard(evt)));
+                container.appendChild(grid);
+
+            } else if (currentActiveLayout === 'kanban') {
+                // Layout 2: grid-cols-1 md:grid-cols-2 lg:grid-cols-4
+                layoutSpecText.innerText = "grid-cols-1 md:grid-cols-2 lg:grid-cols-4";
+
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full h-full";
+
+                const categories = [
+                    { id: 'academics', title: 'Academics', color: 'border-saints-red' },
+                    { id: 'athletics', title: 'Athletics', color: 'border-saints-athletics' },
+                    { id: 'arts', title: 'Fine Arts', color: 'border-saints-arts' },
+                    { id: 'boarding', title: 'Harker Boarding', color: 'border-saints-boarding' }
+                ];
+
+                categories.forEach(cat => {
+                    const col = document.createElement('div');
+                    col.className = `bg-saints-surface/60 border-t-4 ${cat.color} border-saints-border border p-3 rounded-xl flex flex-col gap-3 min-h-[300px] app-bg-surface`;
+                    
+                    const catEvts = events.filter(e => e.cat === cat.id);
+                    col.innerHTML = `<div class="flex items-center justify-between font-bold text-xs text-saints-gold pb-2 border-b border-saints-border"><span>${cat.title}</span><span class="bg-saints-navy px-2 py-0.5 rounded-full text-[10px] text-white">${catEvts.length}</span></div>`;
+                    
+                    const list = document.createElement('div');
+                    list.className = "flex flex-col gap-2.5 flex-1 overflow-y-auto";
+                    catEvts.forEach(evt => list.appendChild(createEventCard(evt)));
+                    col.appendChild(list);
+                    grid.appendChild(col);
+                });
+
+                container.appendChild(grid);
+
+            } else if (currentActiveLayout === 'dashboard') {
+                // Layout 3: grid-cols-1 lg:grid-cols-12
+                layoutSpecText.innerText = "grid-cols-1 lg:grid-cols-12";
+
+                const grid = document.createElement('div');
+                grid.className = "grid grid-cols-1 lg:grid-cols-12 gap-5 w-full h-full";
+
+                // Sidebar/Summary Panel (4 cols on lg)
+                const leftPanel = document.createElement('div');
+                leftPanel.className = "lg:col-span-4 bg-saints-surface border border-saints-border p-4 rounded-2xl flex flex-col gap-4 app-bg-surface";
+                leftPanel.innerHTML = `
+                    <div class="flex items-center gap-2 text-saints-gold font-bold text-sm">
+                        <span class="material-icons-outlined">analytics</span>
+                        <span>Saints Event Metrics</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-center">
+                        <div class="bg-saints-card p-3 rounded-xl border border-saints-border"><span class="block text-xl font-bold text-white">${events.length}</span><span class="text-[10px] text-saints-muted uppercase">Total Events</span></div>
+                        <div class="bg-saints-card p-3 rounded-xl border border-saints-border"><span class="block text-xl font-bold text-saints-gold">4</span><span class="text-[10px] text-saints-muted uppercase">Departments</span></div>
+                    </div>
+                `;
+
+                // Main Event Timeline Feed (8 cols on lg)
+                const rightPanel = document.createElement('div');
+                rightPanel.className = "lg:col-span-8 flex flex-col gap-3";
+                events.forEach(evt => rightPanel.appendChild(createEventCard(evt, true)));
+
+                grid.appendChild(leftPanel);
+                grid.appendChild(rightPanel);
+                container.appendChild(grid);
             }
-            const timeRemaining = oneDay - (now - lastClaim);
-            const hours = Math.floor(timeRemaining / (1000 * 60 * 60));
-            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-            document.getElementById('timerDisplay').innerText = `Next Free Token: ${hours}h ${minutes}m`;
         }
 
-        setInterval(checkDailyToken, 60000);
+        function createEventCard(evt, isLandscape = false) {
+            const card = document.createElement('div');
+            const catColors = {
+                academics: 'border-l-saints-red',
+                athletics: 'border-l-saints-athletics',
+                arts: 'border-l-saints-arts',
+                boarding: 'border-l-saints-boarding'
+            };
 
-        // DEV CODE REDEEM FUNCTION
-        function redeemCode() {
-            const codeInput = document.getElementById('redeemInput').value.trim().toLowerCase();
-            if (codeInput === 'happybirthdaydaniel') {
-                tokens += 999999;
-                localStorage.setItem(TOKENS_KEY, tokens);
-                updateTokenDisplay();
-                alert("🎉 DEV CODE REDEEMED! Infinite Tokens Granted!");
-                document.getElementById('redeemInput').value = '';
+            card.className = `bg-saints-card hover:border-saints-gold/60 border border-saints-border border-l-4 ${catColors[evt.cat] || 'border-l-saints-muted'} p-3.5 rounded-xl shadow-lg flex flex-col gap-2 cursor-pointer transition-all hover:scale-[1.01] active:scale-95 app-bg-card`;
+            card.innerHTML = `
+                <div class="flex items-start justify-between gap-2">
+                    <span class="font-bold text-sm text-white">${evt.title}</span>
+                    <span class="text-[10px] font-mono text-saints-gold bg-saints-navy px-2 py-0.5 rounded border border-saints-border">${evt.date}</span>
+                </div>
+                <p class="text-xs text-saints-muted line-clamp-2">${evt.desc || 'No description available.'}</p>
+            `;
+
+            card.addEventListener('click', () => openEventEditModal(evt));
+            return card;
+        }
+
+        function updateViewportTelemetry() {
+            const width = window.innerWidth;
+            const badgeText = document.getElementById('breakpointText');
+            if (!badgeText) return;
+
+            if (width < 640) badgeText.innerText = "Mobile (<640px) [grid-cols-1]";
+            else if (width < 768) badgeText.innerText = "SM (640-768px) [sm:grid-cols-2]";
+            else if (width < 1024) badgeText.innerText = "MD (768-1024px) [md:grid-cols-2]";
+            else if (width < 1280) badgeText.innerText = "LG (1024-1280px) [lg:grid-cols-3]";
+            else badgeText.innerText = "XL (>1280px) [xl:grid-cols-4]";
+        }
+
+        window.addEventListener('resize', updateViewportTelemetry);
+
+        let userTokens = parseInt(localStorage.getItem(STORAGE_TOKENS_KEY)) || 0;
+        let unlockedThemeIds = JSON.parse(localStorage.getItem(STORAGE_UNLOCKED_KEY)) || ['theme-navy'];
+
+        function updateTokenUI() {
+            const badge = document.getElementById('tokenBadgeCount');
+            if (badge) badge.innerText = `${userTokens.toLocaleString()} Token${userTokens === 1 ? '' : 's'}`;
+        }
+
+        function redeemDeveloperCode() {
+            const input = document.getElementById('developerRedeemInput');
+            const val = (input.value || '').trim().toLowerCase();
+            if (val === 'happybirthdaydaniel') {
+                userTokens += 999999;
+                localStorage.setItem(STORAGE_TOKENS_KEY, userTokens);
+                updateTokenUI();
+                showToast('🎉 Code Redeemed! 999,999 Tokens Granted!', 'success');
+                input.value = '';
             } else {
-                alert("Invalid code.");
+                showToast('❌ Invalid Code. Try happybirthdaydaniel', 'error');
             }
         }
 
-        function pullGacha() {
-            if (tokens < 1) {
-                alert("You need at least 1 Token to pull for themes!");
+        let selectedEditingEvent = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateViewportTelemetry();
+            updateTokenUI();
+
+            // Layout Switcher Buttons
+            document.querySelectorAll('.layout-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.layout-btn').forEach(b => {
+                        b.className = "layout-btn px-3 py-1.5 rounded-md font-medium transition-all text-xs flex items-center gap-1 text-saints-muted hover:text-white";
+                    });
+                    btn.className = "layout-btn active px-3 py-1.5 rounded-md font-medium transition-all text-xs flex items-center gap-1 bg-saints-red text-white";
+
+                    currentActiveLayout = btn.dataset.layout;
+                    renderCurrentLayout();
+                });
+            });
+
+            // Search and Category filters
+            document.getElementById('globalSearchInput').addEventListener('input', (e) => {
+                searchQuery = e.target.value.toLowerCase();
+                renderCurrentLayout();
+            });
+
+            document.querySelectorAll('.cat-filter').forEach(cb => {
+                cb.addEventListener('change', (e) => {
+                    const cat = e.target.dataset.cat;
+                    if (e.target.checked) activeCategories.add(cat);
+                    else activeCategories.delete(cat);
+                    renderCurrentLayout();
+                });
+            });
+
+            // Drawer Toggle
+            const sidebar = document.getElementById('appSidebar');
+            const backdrop = document.getElementById('drawerBackdrop');
+            const toggleDrawer = () => {
+                sidebar.classList.toggle('-translate-x-full');
+                backdrop.classList.toggle('hidden');
+            };
+
+            document.getElementById('sidebarToggleBtn').addEventListener('click', toggleDrawer);
+            document.getElementById('closeDrawerBtn').addEventListener('click', toggleDrawer);
+            backdrop.addEventListener('click', toggleDrawer);
+
+            // Modals & Submits
+            document.querySelectorAll('.closeModalBtn').forEach(b => {
+                b.addEventListener('click', () => document.querySelectorAll('.fixed.inset-0').forEach(m => m.classList.add('hidden')));
+            });
+
+            document.getElementById('openCreateEventModalBtn').addEventListener('click', () => openEventCreateModal());
+            document.getElementById('mobileNavAdd').addEventListener('click', () => openEventCreateModal());
+            document.getElementById('tokenVaultBtn').addEventListener('click', () => document.getElementById('vaultModal').classList.remove('hidden'));
+            document.getElementById('mobileNavVault').addEventListener('click', () => document.getElementById('vaultModal').classList.remove('hidden'));
+
+            document.getElementById('saveEventSubmitBtn').addEventListener('click', handleSaveEventSubmit);
+            document.getElementById('deleteEventBtn').addEventListener('click', handleDeleteEventSubmit);
+            document.getElementById('redeemCodeBtn').addEventListener('click', redeemDeveloperCode);
+
+            renderCurrentLayout();
+        });
+
+        function openEventCreateModal() {
+            selectedEditingEvent = null;
+            document.getElementById('eventModalTitle').innerText = "Create Saints Event";
+            document.getElementById('inputEventTitle').value = '';
+            document.getElementById('inputEventCategory').value = 'academics';
+            document.getElementById('inputEventDate').value = '2026-09-15';
+            document.getElementById('inputEventDesc').value = '';
+            document.getElementById('deleteEventBtn').classList.add('hidden');
+            document.getElementById('eventModal').classList.remove('hidden');
+        }
+
+        function openEventEditModal(evt) {
+            selectedEditingEvent = evt;
+            document.getElementById('eventModalTitle').innerText = "Edit Saints Event";
+            document.getElementById('inputEventTitle').value = evt.title;
+            document.getElementById('inputEventCategory').value = evt.cat;
+            document.getElementById('inputEventDate').value = evt.date;
+            document.getElementById('inputEventDesc').value = evt.desc || '';
+            document.getElementById('deleteEventBtn').classList.remove('hidden');
+            document.getElementById('eventModal').classList.remove('hidden');
+        }
+
+        function handleSaveEventSubmit() {
+            const title = document.getElementById('inputEventTitle').value.trim();
+            const cat = document.getElementById('inputEventCategory').value;
+            const date = document.getElementById('inputEventDate').value;
+            const desc = document.getElementById('inputEventDesc').value;
+
+            if (!title || !date) {
+                showToast('Please enter both title and date.', 'error');
                 return;
             }
 
-            tokens -= 1;
-            localStorage.setItem(TOKENS_KEY, tokens);
-            updateTokenDisplay();
-
-            const rand = Math.random() * 100;
-            let targetTier = 'common';
-
-            if (rand < 2) targetTier = 'mythical';         // 2%
-            else if (rand < 10) targetTier = 'legendary';  // 8%
-            else if (rand < 30) targetTier = 'epic';       // 20%
-            else if (rand < 60) targetTier = 'rare';       // 30%
-            else targetTier = 'common';                   // 40%
-
-            const tierThemes = THEMES_VAULT.filter(t => t.tier === targetTier);
-            const pulledTheme = tierThemes[Math.floor(Math.random() * tierThemes.length)];
-
-            const isNew = !unlockedThemes.includes(pulledTheme.id);
-            if (isNew) {
-                unlockedThemes.push(pulledTheme.id);
-                localStorage.setItem(UNLOCKED_KEY, JSON.stringify(unlockedThemes));
+            const events = getStoredEvents();
+            if (selectedEditingEvent) {
+                const idx = events.findIndex(e => e.id === selectedEditingEvent.id);
+                if (idx !== -1) events[idx] = { ...selectedEditingEvent, title, cat, date, desc };
+                showToast('Event updated!', 'success');
+            } else {
+                events.push({ id: Date.now(), title, cat, date, desc });
+                showToast('Event created!', 'success');
             }
 
-            applyTheme(pulledTheme.id);
-
-            // Show Reveal Modal
-            const titleEl = document.getElementById('revealTierTitle');
-            titleEl.innerText = `${targetTier.toUpperCase()} PULL!`;
-            titleEl.className = `reveal-title tier-${targetTier}`;
-            document.getElementById('revealSwatch').style.background = pulledTheme.color;
-            document.getElementById('revealName').innerText = pulledTheme.name;
-            document.getElementById('revealSubText').innerText = isNew ? "NEW Theme Unlocked & Applied!" : "Already Unlocked - Applied!";
-
-            document.getElementById('revealModal').style.display = 'flex';
-            renderThemeVault();
+            saveStoredEvents(events);
+            document.getElementById('eventModal').classList.add('hidden');
+            renderCurrentLayout();
         }
 
-        function renderThemeVault() {
-            const listContainer = document.getElementById('gachaThemeList');
-            listContainer.innerHTML = '';
-
-            ['common', 'rare', 'epic', 'legendary', 'mythical'].forEach(tier => {
-                const themesInTier = THEMES_VAULT.filter(t => t.tier === tier);
-                const tierHeader = document.createElement('div');
-                tierHeader.className = `tier-label tier-${tier}`;
-                tierHeader.innerText = `${tier.toUpperCase()} THEMES`;
-                listContainer.appendChild(tierHeader);
-
-                themesInTier.forEach(theme => {
-                    const isUnlocked = unlockedThemes.includes(theme.id);
-                    const isCurrent = document.body.className === theme.id;
-
-                    const item = document.createElement('div');
-                    item.className = 'gacha-item';
-                    item.innerHTML = `
-                        <div class="gacha-item-info">
-                            <div class="gacha-preview" style="background:${theme.color}"></div>
-                            <span style="font-size:0.85rem; font-weight:500;">${theme.name}</span>
-                        </div>
-                        <div>
-                            ${isCurrent ? '<span style="font-size:0.75rem; color:var(--saints-gold); font-weight:bold;">Active</span>' :
-                              isUnlocked ? `<button class="apply-btn" onclick="applyTheme('${theme.id}')">Apply</button>` :
-                              `<span style="font-size:0.75rem; color:var(--text-muted);">Locked</span>`}
-                        </div>
-                    `;
-                    listContainer.appendChild(item);
-                });
-            });
-        }
-
-        function applyTheme(themeId) {
-            document.body.className = themeId;
-            localStorage.setItem(THEME_KEY, themeId);
-            renderThemeVault();
-        }
-
-        let currentDate = new Date(); 
-        const today = new Date();
-        let currentView = 'month';
-        let selectedEvent = null;
-        let events = loadEvents();
-
-        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const dayNames = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-
-        const currentDateDisplay = document.getElementById('currentDateDisplay');
-        const miniDateDisplay = document.getElementById('miniDateDisplay');
-        const calendarView = document.getElementById('calendarView');
-        const miniGrid = document.getElementById('miniGrid');
-        const sidebar = document.getElementById('sidebar');
-        const viewModeSelect = document.getElementById('viewModeSelect');
-        const searchInput = document.getElementById('searchInput');
-
-        function renderCalendar() {
-            if (currentView === 'month') renderMonthView();
-            else renderWeekView();
-            renderMiniCalendar();
-            applyCategoryFilters();
-            filterEventsBySearch();
-        }
-
-        function renderMonthView() {
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-
-            currentDateDisplay.innerText = `${monthNames[month]} ${year}`;
-            calendarView.innerHTML = `
-                <div class="days-header">
-                    <div class="day-label">SUN</div><div class="day-label">MON</div>
-                    <div class="day-label">TUE</div><div class="day-label">WED</div>
-                    <div class="day-label">THU</div><div class="day-label">FRI</div>
-                    <div class="day-label">SAT</div>
-                </div>
-                <div class="month-grid" id="mainGrid"></div>
-            `;
-
-            const mainGrid = document.getElementById('mainGrid');
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const lastDay = new Date(year, month + 1, 0).getDate();
-            const prevLastDay = new Date(year, month, 0).getDate();
-
-            for (let x = firstDayIndex; x > 0; x--) {
-                const prevDate = new Date(year, month - 1, prevLastDay - x + 1);
-                mainGrid.appendChild(createCell(prevDate, true));
+        function handleDeleteEventSubmit() {
+            if (selectedEditingEvent) {
+                const events = getStoredEvents().filter(e => e.id !== selectedEditingEvent.id);
+                saveStoredEvents(events);
+                showToast('Event deleted', 'info');
             }
-
-            for (let i = 1; i <= lastDay; i++) {
-                const curDate = new Date(year, month, i);
-                mainGrid.appendChild(createCell(curDate, false));
-            }
-
-            const totalCellsRendered = firstDayIndex + lastDay;
-            const nextDays = (totalCellsRendered > 35 ? 42 : 35) - totalCellsRendered;
-            for (let j = 1; j <= nextDays; j++) {
-                const nextDate = new Date(year, month + 1, j);
-                mainGrid.appendChild(createCell(nextDate, true));
-            }
+            document.getElementById('eventModal').classList.add('hidden');
+            renderCurrentLayout();
         }
-
-        function renderWeekView() {
-            const startOfWeek = new Date(currentDate);
-            startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
-            currentDateDisplay.innerText = `${monthNames[startOfWeek.getMonth()]} ${startOfWeek.getFullYear()}`;
-
-            let weekDaysHTML = '';
-            let weekDaysArr = [];
-
-            for (let i = 0; i < 7; i++) {
-                const d = new Date(startOfWeek);
-                d.setDate(startOfWeek.getDate() + i);
-                weekDaysArr.push(d);
-                const isToday = (d.getDate() === today.getDate() && d.getMonth() === today.getMonth() && d.getFullYear() === today.getFullYear());
-                weekDaysHTML += `<div class="week-day-header ${isToday ? 'today' : ''}"><div class="day-name">${dayNames[i]}</div><div class="day-num">${d.getDate()}</div></div>`;
-            }
-
-            const hours = ['8 AM', '9 AM', '10 AM', '11 AM', '12 PM', '1 PM', '2 PM', '3 PM', '4 PM', '5 PM', '6 PM'];
-            let timeRowsHTML = '';
-
-            hours.forEach(hour => {
-                let cellsForHour = '';
-                weekDaysArr.forEach(dateObj => {
-                    const dateKey = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
-                    cellsForHour += `<div class="week-cell" data-date="${dateKey}"></div>`;
-                });
-                timeRowsHTML += `<div class="time-row"><div class="time-label">${hour}</div>${cellsForHour}</div>`;
-            });
-
-            calendarView.innerHTML = `<div class="week-view-container"><div class="week-header"><div class="week-time-gutter-header"></div>${weekDaysHTML}</div><div class="week-body">${timeRowsHTML}</div></div>`;
-
-            weekDaysArr.forEach(dateObj => {
-                const dateKey = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
-                const dayCells = calendarView.querySelectorAll(`.week-cell[data-date="${dateKey}"]`);
-                if (dayCells.length > 0) {
-                    events.filter(e => e.date === dateKey).forEach(evt => dayCells[0].appendChild(createEventElement(evt)));
-                }
-            });
-        }
-
-        function createCell(dateObj, isOtherMonth) {
-            const cell = document.createElement('div');
-            cell.className = 'cell' + (isOtherMonth ? ' other-month' : '');
-            const dateKey = `${dateObj.getFullYear()}-${String(dateObj.getMonth() + 1).padStart(2, '0')}-${String(dateObj.getDate()).padStart(2, '0')}`;
-            cell.setAttribute('data-date', dateKey);
-
-            if (dateObj.getDate() === today.getDate() && dateObj.getMonth() === today.getMonth() && dateObj.getFullYear() === today.getFullYear()) {
-                cell.classList.add('today');
-            }
-
-            cell.innerHTML = `<div class="cell-number">${dateObj.getDate()}</div>`;
-            events.filter(e => e.date === dateKey).forEach(evt => cell.appendChild(createEventElement(evt)));
-            return cell;
-        }
-
-        function createEventElement(evt) {
-            const evtDiv = document.createElement('div');
-            evtDiv.className = `event ${evt.cat}` + (evt.expanded ? ' expanded' : '');
-            evtDiv.setAttribute('data-title', (evt.title || '').toLowerCase());
-            evtDiv.setAttribute('data-desc', (evt.desc || '').toLowerCase());
-
-            evtDiv.innerHTML = `
-                <div class="event-header">
-                    <span class="event-title">${evt.title}</span>
-                    <div class="event-actions">
-                        <button class="event-btn edit-btn-icon"><span class="material-icons-outlined" style="font-size:14px;">edit</span></button>
-                    </div>
-                </div>
-                <div class="event-details">${evt.desc ? evt.desc : '<em>No description.</em>'}</div>
-            `;
-
-            evtDiv.querySelector('.edit-btn-icon').addEventListener('click', (e) => {
-                e.stopPropagation();
-                openEditModal(evt);
-            });
-
-            evtDiv.addEventListener('click', () => {
-                evt.expanded = !evt.expanded;
-                saveEvents(events);
-                renderCalendar();
-            });
-
-            return evtDiv;
-        }
-
-        function renderMiniCalendar() {
-            miniDateDisplay.innerText = `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-            miniGrid.innerHTML = `<div class="mini-day-name">S</div><div class="mini-day-name">M</div><div class="mini-day-name">T</div><div class="mini-day-name">W</div><div class="mini-day-name">T</div><div class="mini-day-name">F</div><div class="mini-day-name">S</div>`;
-
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth();
-            const firstDayIndex = new Date(year, month, 1).getDay();
-            const lastDay = new Date(year, month + 1, 0).getDate();
-            const prevLastDay = new Date(year, month, 0).getDate();
-
-            for (let x = firstDayIndex; x > 0; x--) miniGrid.innerHTML += `<div class="mini-day other-month">${prevLastDay - x + 1}</div>`;
-            for (let i = 1; i <= lastDay; i++) {
-                let isActive = (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) ? 'active' : '';
-                miniGrid.innerHTML += `<div class="mini-day ${isActive}">${i}</div>`;
-            }
-        }
-
-        function applyCategoryFilters() {
-            document.querySelectorAll('.cat-filter').forEach(checkbox => {
-                const category = checkbox.getAttribute('data-category');
-                document.querySelectorAll(`.event.${category}`).forEach(el => {
-                    if (checkbox.checked) el.classList.remove('hidden-category');
-                    else el.classList.add('hidden-category');
-                });
-            });
-        }
-
-        function filterEventsBySearch() {
-            const query = searchInput.value.toLowerCase().trim();
-            document.querySelectorAll('.event').forEach(el => {
-                const title = el.getAttribute('data-title') || '';
-                const desc = el.getAttribute('data-desc') || '';
-                if (!query || title.includes(query) || desc.includes(query)) el.classList.remove('hidden-search');
-                else el.classList.add('hidden-search');
-            });
-        }
-
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        function openEditModal(evt) {
-            selectedEvent = evt;
-            document.getElementById('editEventTitle').value = evt.title;
-            document.getElementById('editEventCategory').value = evt.cat;
-            document.getElementById('editEventDate').value = evt.date;
-            document.getElementById('editEventDesc').value = evt.desc || '';
-            document.getElementById('editEventModal').style.display = 'flex';
-        }
-
-        document.getElementById('updateEventBtn').addEventListener('click', () => {
-            if (selectedEvent) {
-                selectedEvent.title = document.getElementById('editEventTitle').value;
-                selectedEvent.cat = document.getElementById('editEventCategory').value;
-                selectedEvent.date = document.getElementById('editEventDate').value;
-                selectedEvent.desc = document.getElementById('editEventDesc').value;
-                saveEvents(events);
-                closeModal('editEventModal');
-                renderCalendar();
-            }
-        });
-
-        document.getElementById('deleteEventBtn').addEventListener('click', () => {
-            if (selectedEvent) {
-                events = events.filter(e => e.id !== selectedEvent.id);
-                saveEvents(events);
-                closeModal('editEventModal');
-                renderCalendar();
-            }
-        });
-
-        document.getElementById('openCreateModal').addEventListener('click', () => {
-            document.getElementById('eventDate').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-            document.getElementById('createEventModal').style.display = 'flex';
-        });
-
-        document.getElementById('saveEventBtn').addEventListener('click', () => {
-            const title = document.getElementById('eventTitle').value;
-            const category = document.getElementById('eventCategory').value;
-            const dateVal = document.getElementById('eventDate').value;
-            const descVal = document.getElementById('eventDesc').value;
-
-            if (title && dateVal) {
-                events.push({ id: Date.now(), title, cat: category, date: dateVal, desc: descVal, expanded: false });
-                saveEvents(events);
-                document.getElementById('eventTitle').value = '';
-                document.getElementById('eventDesc').value = '';
-                closeModal('createEventModal');
-                renderCalendar();
-            }
-        });
-
-        document.getElementById('prevBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
-        document.getElementById('nextBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
-        document.getElementById('miniPrevBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() - 1); renderCalendar(); });
-        document.getElementById('miniNextBtn').addEventListener('click', () => { currentDate.setMonth(currentDate.getMonth() + 1); renderCalendar(); });
-        document.getElementById('todayBtn').addEventListener('click', () => { currentDate = new Date(); renderCalendar(); });
-
-        viewModeSelect.addEventListener('change', (e) => { currentView = e.target.value; renderCalendar(); });
-        searchInput.addEventListener('input', filterEventsBySearch);
-        document.getElementById('menuBtn').addEventListener('click', () => { sidebar.style.display = (sidebar.style.display === 'none') ? 'flex' : 'none'; });
-        
-        document.getElementById('pullBtn').addEventListener('click', pullGacha);
-        document.getElementById('redeemBtn').addEventListener('click', redeemCode);
-        document.getElementById('settingsBtn').addEventListener('click', () => { renderThemeVault(); document.getElementById('settingsModal').style.display = 'flex'; });
-        document.getElementById('tokenBadge').addEventListener('click', () => { renderThemeVault(); document.getElementById('settingsModal').style.display = 'flex'; });
-
-        document.querySelectorAll('.cat-filter').forEach(cb => cb.addEventListener('change', applyCategoryFilters));
-
-        // Initialization
-        const savedTheme = localStorage.getItem(THEME_KEY);
-        if (savedTheme) document.body.className = savedTheme;
-        checkDailyToken();
-        updateTokenDisplay();
-        renderCalendar();
     </script>
 </body>
 </html>
